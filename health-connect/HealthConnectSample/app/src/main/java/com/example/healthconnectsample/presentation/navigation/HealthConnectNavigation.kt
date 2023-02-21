@@ -45,9 +45,7 @@ import com.example.healthconnectsample.presentation.screen.sleepsession.SleepSes
 import com.example.healthconnectsample.presentation.screen.sleepsession.SleepSessionViewModel
 import com.example.healthconnectsample.presentation.screen.sleepsession.SleepSessionViewModelFactory
 import com.example.healthconnectsample.showExceptionSnackbar
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 /**
  * Provides the navigation in the app.
@@ -90,6 +88,7 @@ fun HealthConnectNavigation(
             )
             val permissionsGranted by viewModel.permissionsGranted
             val sessionsList by viewModel.sessionsList
+            val stepsList by viewModel.stepsList
             val permissions = viewModel.permissions
             val onPermissionsResult = {viewModel.initialLoad()}
             val permissionsLauncher =
@@ -99,6 +98,7 @@ fun HealthConnectNavigation(
                 permissionsGranted = permissionsGranted,
                 permissions = permissions,
                 sessionsList = sessionsList,
+                stepsList = stepsList,
                 uiState = viewModel.uiState,
                 onInsertClick = {
                     viewModel.insertExerciseSession()

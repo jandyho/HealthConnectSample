@@ -32,6 +32,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.healthconnectsample.data.ExerciseSession
 import com.example.healthconnectsample.data.HealthConnectManager
+import com.example.healthconnectsample.data.StepSession
 import com.example.healthconnectsample.data.dateTimeWithOffsetOrDefault
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -60,6 +61,8 @@ class ExerciseSessionViewModel(private val healthConnectManager: HealthConnectMa
         private set
 
     var sessionsList: MutableState<List<ExerciseSession>> = mutableStateOf(listOf())
+        private set
+    var stepsList: MutableState<List<StepSession>> = mutableStateOf(listOf())
         private set
 
     var uiState: UiState by mutableStateOf(UiState.Uninitialized)
@@ -119,6 +122,8 @@ class ExerciseSessionViewModel(private val healthConnectManager: HealthConnectMa
                     title = record.title
                 )
             }
+        val sevenDays = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).minusDays(7)
+        stepsList.value = healthConnectManager.readSteps(sevenDays.toInstant())
     }
 
     /**

@@ -47,6 +47,7 @@ fun ExerciseSessionInfoColumn(
     end: ZonedDateTime,
     uid: String,
     name: String,
+    steps: String,
     sourceAppName: String,
     sourceAppIcon: Drawable?,
     onClick: (String) -> Unit = {}
@@ -58,10 +59,11 @@ fun ExerciseSessionInfoColumn(
     ) {
         Text(
             color = MaterialTheme.colors.primary,
-            text = "${start.toLocalTime()} - ${end.toLocalTime()}",
+            text = "${start.toLocalDateTime()} - ${end.toLocalDateTime()}",
             style = MaterialTheme.typography.caption
         )
         Text(name)
+        Text(steps)
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -91,6 +93,7 @@ fun ExerciseSessionInfoColumnPreview() {
             ZonedDateTime.now(),
             UUID.randomUUID().toString(),
             "Running",
+            "0",
             "My Fitness App",
             null
         )

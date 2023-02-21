@@ -38,6 +38,7 @@ import androidx.health.connect.client.records.ExerciseSessionRecord
 import com.example.healthconnectsample.R
 import com.example.healthconnectsample.data.ExerciseSession
 import com.example.healthconnectsample.data.HealthConnectAppInfo
+import com.example.healthconnectsample.data.StepSession
 import com.example.healthconnectsample.presentation.component.ExerciseSessionRow
 import com.example.healthconnectsample.presentation.theme.HealthConnectTheme
 import java.time.ZonedDateTime
@@ -51,6 +52,7 @@ fun ExerciseSessionScreen(
     permissions: Set<String>,
     permissionsGranted: Boolean,
     sessionsList: List<ExerciseSession>,
+    stepsList: List<StepSession>,
     uiState: ExerciseSessionViewModel.UiState,
     onInsertClick: () -> Unit = {},
     onDetailsClick: (String) -> Unit = {},
@@ -118,6 +120,26 @@ fun ExerciseSessionScreen(
                         end = session.endTime,
                         uid = session.id,
                         name = session.title ?: stringResource(R.string.no_title),
+                        "0",
+                        sourceAppName = appInfo?.appLabel ?: stringResource(R.string.unknown_app),
+                        sourceAppIcon = appInfo?.icon,
+                        onDeleteClick = { uid ->
+                            onDeleteClick(uid)
+                        },
+                        onDetailsClick = { uid ->
+                            onDetailsClick(uid)
+                        }
+                    )
+                }
+
+                items(stepsList) { steps ->
+                    val appInfo = steps.sourceAppInfo
+                    ExerciseSessionRow(
+                        start = steps.startTime,
+                        end = steps.endTime,
+                        uid = steps.id,
+                        "Steps",
+                        steps.count,
                         sourceAppName = appInfo?.appLabel ?: stringResource(R.string.unknown_app),
                         sourceAppIcon = appInfo?.icon,
                         onDeleteClick = { uid ->
@@ -168,7 +190,8 @@ fun ExerciseSessionScreenPreview() {
                     sourceAppInfo = appInfo
                 )
             ),
-            uiState = ExerciseSessionViewModel.UiState.Done
+            uiState = ExerciseSessionViewModel.UiState.Done,
+            stepsList = listOf()
         )
     }
 }

@@ -46,6 +46,7 @@ fun ExerciseSessionRow(
     end: ZonedDateTime,
     uid: String,
     name: String,
+    steps: String,
     sourceAppName: String,
     sourceAppIcon: Drawable?,
     onDeleteClick: (String) -> Unit = {},
@@ -63,6 +64,7 @@ fun ExerciseSessionRow(
             end = end,
             uid = uid,
             name = name,
+            steps = steps,
             sourceAppName = sourceAppName,
             sourceAppIcon = sourceAppIcon,
             onClick = onDetailsClick
@@ -85,6 +87,7 @@ fun ExerciseSessionRowPreview() {
             ZonedDateTime.now(),
             UUID.randomUUID().toString(),
             "Running",
+            "0",
             sourceAppName = "My Fitness app",
             sourceAppIcon = context.getDrawable(R.drawable.ic_launcher_foreground)
         )

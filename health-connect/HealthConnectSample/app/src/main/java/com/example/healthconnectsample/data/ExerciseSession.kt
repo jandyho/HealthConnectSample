@@ -27,3 +27,12 @@ data class ExerciseSession(
     val title: String?,
     val sourceAppInfo: HealthConnectAppInfo?
 )
+
+data class StepSession(
+    val startTime: ZonedDateTime,
+    val endTime: ZonedDateTime,
+    val id: String,
+    val title: String?,
+    val count: String,
+    val sourceAppInfo: HealthConnectAppInfo?
+)
