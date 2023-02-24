@@ -40,6 +40,7 @@ import com.example.healthconnectsample.data.ExerciseSession
 import com.example.healthconnectsample.data.HealthConnectAppInfo
 import com.example.healthconnectsample.data.StepSession
 import com.example.healthconnectsample.presentation.component.ExerciseSessionRow
+import com.example.healthconnectsample.presentation.component.StepSessionRow
 import com.example.healthconnectsample.presentation.theme.HealthConnectTheme
 import java.time.ZonedDateTime
 import java.util.UUID
@@ -134,11 +135,11 @@ fun ExerciseSessionScreen(
 
                 items(stepsList) { steps ->
                     val appInfo = steps.sourceAppInfo
-                    ExerciseSessionRow(
+                    StepSessionRow(
                         start = steps.startTime,
                         end = steps.endTime,
                         uid = steps.id,
-                        "Steps",
+                        "Walking",
                         steps.count,
                         sourceAppName = appInfo?.appLabel ?: stringResource(R.string.unknown_app),
                         sourceAppIcon = appInfo?.icon,

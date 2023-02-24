@@ -45,8 +45,6 @@ import androidx.health.connect.client.units.Length
 import androidx.health.connect.client.units.Mass
 import androidx.health.connect.client.units.Velocity
 import com.example.healthconnectsample.R
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import java.io.IOException
 import java.time.Instant
 import java.time.ZoneId
@@ -54,6 +52,8 @@ import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random
 import kotlin.reflect.KClass
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 // The minimum android level that can use Health Connect
 const val MIN_SUPPORTED_SDK = Build.VERSION_CODES.O_MR1
@@ -153,6 +153,26 @@ class HealthConnectManager(private val context: Context) {
                 it.count.toString(),
                 sourceAppInfo = healthConnectCompatibleApps[packageName],
 
+            )
+        }
+    }
+
+    suspend fun readStepSession(start: Instant): List<StepSession> {
+        val request = ReadRecordsRequest(
+            recordType = StepsRecord::class,
+            timeRangeFilter = TimeRangeFilter.after(start),
+            dataOriginFilter = setOf( DataOrigin("com.sec.android.app.shealth"))
+        )
+        val response = healthConnectClient.readRecords(request)
+        return response.records.reversed().map {
+            val packageName = it.metadata.dataOrigin.packageName
+            StepSession(
+                it.startTime.truncatedTo(ChronoUnit.DAYS).atZone(ZoneId.of("GMT")),
+                it.endTime.truncatedTo(ChronoUnit.DAYS).atZone(ZoneId.of("GMT")),
+                it.metadata.id,
+                "Walking",
+                it.count.toString(),
+                sourceAppInfo = healthConnectCompatibleApps[packageName],
             )
         }
     }

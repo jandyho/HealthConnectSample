@@ -34,7 +34,6 @@ import com.example.healthconnectsample.data.ExerciseSession
 import com.example.healthconnectsample.data.HealthConnectManager
 import com.example.healthconnectsample.data.StepSession
 import com.example.healthconnectsample.data.dateTimeWithOffsetOrDefault
-import kotlinx.coroutines.launch
 import java.io.IOException
 import java.time.Duration
 import java.time.Instant
@@ -42,6 +41,7 @@ import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 import kotlin.random.Random
+import kotlinx.coroutines.launch
 
 class ExerciseSessionViewModel(private val healthConnectManager: HealthConnectManager) :
     ViewModel() {
@@ -122,8 +122,8 @@ class ExerciseSessionViewModel(private val healthConnectManager: HealthConnectMa
                     title = record.title
                 )
             }
-        val sevenDays = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).minusDays(7)
-        stepsList.value = healthConnectManager.readSteps(sevenDays.toInstant())
+        val sevenDays = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).minusDays(31)
+        stepsList.value = healthConnectManager.readStepSession(sevenDays.toInstant())
     }
 
     /**
