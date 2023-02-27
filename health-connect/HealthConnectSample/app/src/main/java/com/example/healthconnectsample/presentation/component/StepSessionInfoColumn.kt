@@ -15,25 +15,15 @@
  */
 package com.example.healthconnectsample.presentation.component
 
-import android.graphics.drawable.Drawable
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import com.example.healthconnectsample.presentation.theme.HealthConnectTheme
-import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
@@ -44,13 +34,10 @@ import java.util.UUID
 
 @Composable
 fun StepSessionInfoColumn(
-    start: ZonedDateTime,
-    end: ZonedDateTime,
+    time: ZonedDateTime,
     uid: String,
     name: String,
     steps: String,
-    sourceAppName: String,
-    sourceAppIcon: Drawable?,
     onClick: (String) -> Unit = {}
 ) {
     Column(
@@ -61,26 +48,10 @@ fun StepSessionInfoColumn(
         val formatter = DateTimeFormatter.ofPattern("yyyy년MM월dd일")
         Text(
             color = MaterialTheme.colors.primary,
-            text = "${end.format(formatter)}",
+            text = time.format(formatter),
             style = MaterialTheme.typography.caption
         )
-        Text(String.format("$name : $steps steps"))
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                modifier = Modifier
-                    .padding(4.dp, 2.dp)
-                    .height(16.dp)
-                    .width(16.dp),
-                painter = rememberDrawablePainter(drawable = sourceAppIcon),
-                contentDescription = "App Icon"
-            )
-            Text(
-                text = sourceAppName,
-                fontStyle = FontStyle.Italic
-            )
-        }
+        Text(String.format("$name : %,d steps", steps.toInt()))
     }
 }
 
@@ -89,13 +60,10 @@ fun StepSessionInfoColumn(
 fun StepSessionInfoColumnPreview() {
     HealthConnectTheme {
         StepSessionInfoColumn(
-            ZonedDateTime.now().minusMinutes(30),
             ZonedDateTime.now(),
             UUID.randomUUID().toString(),
             "Walking",
-            "3000 steps",
-            "My Health App",
-            null
+            "3000"
         )
     }
 }

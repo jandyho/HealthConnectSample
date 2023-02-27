@@ -15,24 +15,17 @@
  */
 package com.example.healthconnectsample.presentation.component
 
-import android.graphics.drawable.Drawable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.health.connect.client.records.ExerciseSessionRecord
-import com.example.healthconnectsample.R
 import com.example.healthconnectsample.presentation.theme.HealthConnectTheme
 import java.time.ZonedDateTime
 import java.util.UUID
@@ -43,54 +36,39 @@ import java.util.UUID
 
 @Composable
 fun StepSessionRow(
-    start: ZonedDateTime,
-    end: ZonedDateTime,
+    time: ZonedDateTime,
     uid: String,
     name: String,
     steps: String,
-    sourceAppName: String,
-    sourceAppIcon: Drawable?,
-    onDeleteClick: (String) -> Unit = {},
     onDetailsClick: (String) -> Unit = {}
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 4.dp, vertical = 8.dp),
+            .padding(horizontal = 4.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         StepSessionInfoColumn(
-            start = start,
-            end = end,
+            time = time,
             uid = uid,
             name = name,
             steps = steps,
-            sourceAppName = sourceAppName,
-            sourceAppIcon = sourceAppIcon,
             onClick = onDetailsClick
         )
-        IconButton(
-            onClick = { onDeleteClick(uid) },
-        ) {
-            Icon(Icons.Default.Delete, stringResource(R.string.delete_button))
-        }
     }
 }
 
 @Preview
 @Composable
 fun StepSessionRowPreview() {
-    val context = LocalContext.current
+    LocalContext.current
     HealthConnectTheme {
         StepSessionRow(
-            ZonedDateTime.now().minusMinutes(30),
             ZonedDateTime.now(),
             UUID.randomUUID().toString(),
             "Walking",
-            "3000 steps",
-            sourceAppName = "My Health app",
-            sourceAppIcon = context.getDrawable(R.drawable.ic_launcher_foreground)
+            "3000"
         )
     }
 }

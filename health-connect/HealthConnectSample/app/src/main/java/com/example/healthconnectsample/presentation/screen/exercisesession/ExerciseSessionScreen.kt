@@ -15,12 +15,18 @@
  */
 package com.example.healthconnectsample.presentation.screen.exercisesession
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -32,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.health.connect.client.records.ExerciseSessionRecord
@@ -42,6 +49,7 @@ import com.example.healthconnectsample.data.StepSession
 import com.example.healthconnectsample.presentation.component.ExerciseSessionRow
 import com.example.healthconnectsample.presentation.component.StepSessionRow
 import com.example.healthconnectsample.presentation.theme.HealthConnectTheme
+import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import java.time.ZonedDateTime
 import java.util.UUID
 
@@ -99,7 +107,7 @@ fun ExerciseSessionScreen(
                         Text(text = stringResource(R.string.permissions_button_label))
                     }
                 }
-            } else {
+            } else if (sessionsList.isNotEmpty()) {
                 item {
                     Button(
                         modifier = Modifier
@@ -132,24 +140,55 @@ fun ExerciseSessionScreen(
                         }
                     )
                 }
+            }
+        }
+        if (stepsList.isNotEmpty()) {
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = 160.dp)
+            ) {
+                val appInfo = stepsList.first().sourceAppInfo
+                appInfo?.let {
+                    item {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Image(
+                                modifier = Modifier
+                                    .padding(4.dp, 2.dp)
+                                    .height(16.dp)
+                                    .width(16.dp),
+                                painter = rememberDrawablePainter(drawable = it.icon),
+                                contentDescription = "App Icon"
+                            )
+                            Text(
+                                text = it.appLabel,
+                                fontStyle = FontStyle.Italic
+                            )
+                        }
+                    }
+                    item {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            val sum = stepsList.sumOf { it.count.toInt() }
+                            Text(
+                                text = String.format("%,d steps", sum),
+                                fontStyle = FontStyle.Italic
+                            )
+                        }
+                    }
+                }
 
-                items(stepsList) { steps ->
-                    val appInfo = steps.sourceAppInfo
+                items(items = stepsList) { steps ->
+                    steps.sourceAppInfo
                     StepSessionRow(
-                        start = steps.startTime,
-                        end = steps.endTime,
+                        time = steps.endTime,
                         uid = steps.id,
                         "Walking",
-                        steps.count,
-                        sourceAppName = appInfo?.appLabel ?: stringResource(R.string.unknown_app),
-                        sourceAppIcon = appInfo?.icon,
-                        onDeleteClick = { uid ->
-                            onDeleteClick(uid)
-                        },
-                        onDetailsClick = { uid ->
-                            onDetailsClick(uid)
-                        }
-                    )
+                        steps.count
+                    ) { uid ->
+                        onDetailsClick(uid)
+                    }
                 }
             }
         }
@@ -176,23 +215,40 @@ fun ExerciseSessionScreenPreview() {
             permissions = setOf(),
             permissionsGranted = true,
             sessionsList = listOf(
-                ExerciseSession(
-                    title = "Running",
+//                ExerciseSession(
+//                    title = "Running",
+//                    startTime = runningStartTime,
+//                    endTime = runningEndTime,
+//                    id = UUID.randomUUID().toString(),
+//                    sourceAppInfo = appInfo
+//                ),
+//                ExerciseSession(
+//                    title = "Running",
+//                    startTime = walkingStartTime,
+//                    endTime = walkingEndTime,
+//                    id = UUID.randomUUID().toString(),
+//                    sourceAppInfo = appInfo
+//                )
+            ),
+            uiState = ExerciseSessionViewModel.UiState.Done,
+            stepsList = listOf(
+                StepSession(
+                    title = "Walking",
                     startTime = runningStartTime,
                     endTime = runningEndTime,
                     id = UUID.randomUUID().toString(),
+                    count = "3000",
                     sourceAppInfo = appInfo
                 ),
-                ExerciseSession(
+                StepSession(
                     title = "Walking",
                     startTime = walkingStartTime,
                     endTime = walkingEndTime,
                     id = UUID.randomUUID().toString(),
+                    count = "5000",
                     sourceAppInfo = appInfo
                 )
-            ),
-            uiState = ExerciseSessionViewModel.UiState.Done,
-            stepsList = listOf()
+            )
         )
     }
 }
