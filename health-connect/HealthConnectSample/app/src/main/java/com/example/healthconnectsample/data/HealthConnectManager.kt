@@ -134,27 +134,7 @@ class HealthConnectManager(private val context: Context) {
             timeRangeFilter = TimeRangeFilter.between(start, end)
         )
         val response = healthConnectClient.readRecords(request)
-        return response.records
-    }
-
-    suspend fun readSteps(start: Instant): List<StepSession> {
-        val request = ReadRecordsRequest(
-            recordType = StepsRecord::class,
-            timeRangeFilter = TimeRangeFilter.after(start),
-            dataOriginFilter = setOf( DataOrigin("com.sec.android.app.shealth"))
-        )
-        val response = healthConnectClient.readRecords(request)
-        return response.records.reversed().map {
-            val packageName = it.metadata.dataOrigin.packageName
-            StepSession(it.startTime.truncatedTo(ChronoUnit.DAYS).atZone(ZoneId.systemDefault()),
-                it.endTime.truncatedTo(ChronoUnit.DAYS).atZone(ZoneId.systemDefault()),
-                it.metadata.id,
-                "Steps",
-                it.count.toString(),
-                sourceAppInfo = healthConnectCompatibleApps[packageName],
-
-            )
-        }
+        return response.records.reversed()
     }
 
     suspend fun readStepSession(start: Instant): List<StepSession> {

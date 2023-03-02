@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.DistanceRecord
 import androidx.health.connect.client.records.ExerciseSessionRecord
+import androidx.health.connect.client.records.ExerciseSessionRecord.Companion.EXERCISE_TYPE_INT_TO_STRING_MAP
 import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.SpeedRecord
 import androidx.health.connect.client.records.StepsRecord
@@ -107,23 +108,23 @@ class ExerciseSessionViewModel(private val healthConnectManager: HealthConnectMa
     }
 
     private suspend fun readExerciseSessions() {
-        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
+//        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
+        val start = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).minusDays(31)
         val now = Instant.now()
 
         sessionsList.value = healthConnectManager
-            .readExerciseSessions(startOfDay.toInstant(), now)
+            .readExerciseSessions(start.toInstant(), now)
             .map { record ->
                 val packageName = record.metadata.dataOrigin.packageName
                 ExerciseSession(
                     startTime = dateTimeWithOffsetOrDefault(record.startTime, record.startZoneOffset),
                     endTime = dateTimeWithOffsetOrDefault(record.startTime, record.startZoneOffset),
-                    id = record.metadata.id,
+                    id = EXERCISE_TYPE_INT_TO_STRING_MAP[record.exerciseType].toString(),
                     sourceAppInfo = healthConnectCompatibleApps[packageName],
                     title = record.title
                 )
             }
-        val sevenDays = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).minusDays(31)
-        stepsList.value = healthConnectManager.readStepSession(sevenDays.toInstant())
+        stepsList.value = healthConnectManager.readStepSession(start.toInstant())
     }
 
     /**
