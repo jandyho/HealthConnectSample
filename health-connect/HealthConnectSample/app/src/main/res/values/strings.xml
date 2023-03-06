@@ -18,6 +18,7 @@
     <string name="welcome_screen">Welcome screen</string>
     <string name="exercise_sessions">Exercise sessions</string>
     <string name="exercise_session_detail">Exercise session detail</string>
+    <string name="step_sessions">Step sessions</string>
     <string name="sleep_sessions">Sleep sessions</string>
     <string name="sleep_session_detail">Sleep session detail</string>
     <string name="differential_changes">Changes</string>

@@ -44,6 +44,9 @@ import com.example.healthconnectsample.presentation.screen.privacypolicy.Privacy
 import com.example.healthconnectsample.presentation.screen.sleepsession.SleepSessionScreen
 import com.example.healthconnectsample.presentation.screen.sleepsession.SleepSessionViewModel
 import com.example.healthconnectsample.presentation.screen.sleepsession.SleepSessionViewModelFactory
+import com.example.healthconnectsample.presentation.screen.step.StepSessionScreen
+import com.example.healthconnectsample.presentation.screen.step.StepSessionViewModel
+import com.example.healthconnectsample.presentation.screen.step.StepSessionViewModelFactory
 import com.example.healthconnectsample.showExceptionSnackbar
 import kotlinx.coroutines.launch
 
@@ -88,7 +91,6 @@ fun HealthConnectNavigation(
             )
             val permissionsGranted by viewModel.permissionsGranted
             val sessionsList by viewModel.sessionsList
-            val stepsList by viewModel.stepsList
             val permissions = viewModel.permissions
             val onPermissionsResult = {viewModel.initialLoad()}
             val permissionsLauncher =
@@ -98,7 +100,6 @@ fun HealthConnectNavigation(
                 permissionsGranted = permissionsGranted,
                 permissions = permissions,
                 sessionsList = sessionsList,
-                stepsList = stepsList,
                 uiState = viewModel.uiState,
                 onInsertClick = {
                     viewModel.insertExerciseSession()
@@ -139,6 +140,43 @@ fun HealthConnectNavigation(
                 permissionsGranted = permissionsGranted,
                 sessionMetrics = sessionMetrics,
                 uiState = viewModel.uiState,
+                onError = { exception ->
+                    showExceptionSnackbar(scaffoldState, scope, exception)
+                },
+                onPermissionsResult = {
+                    viewModel.initialLoad()
+                },
+                onPermissionsLaunch = { values ->
+                    permissionsLauncher.launch(values)}
+            )
+        }
+        composable(Screen.StepSessions.route) {
+            val viewModel: StepSessionViewModel = viewModel(
+                factory = StepSessionViewModelFactory(
+                    healthConnectManager = healthConnectManager
+                )
+            )
+            val permissionsGranted by viewModel.permissionsGranted
+            val stepsList by viewModel.stepsList
+            val permissions = viewModel.permissions
+            val onPermissionsResult = {viewModel.initialLoad()}
+            val permissionsLauncher =
+                rememberLauncherForActivityResult(viewModel.permissionsLauncher) {
+                    onPermissionsResult()}
+            StepSessionScreen(
+                permissionsGranted = permissionsGranted,
+                permissions = permissions,
+                stepsList = stepsList,
+                uiState = viewModel.uiState,
+                onInsertClick = {
+                    viewModel.insertStepSession()
+                },
+                onDetailsClick = { uid ->
+                    navController.navigate(Screen.ExerciseSessionDetail.route + "/" + uid)
+                },
+                onDeleteClick = { uid ->
+                    viewModel.deleteStepSession(uid)
+                },
                 onError = { exception ->
                     showExceptionSnackbar(scaffoldState, scope, exception)
                 },

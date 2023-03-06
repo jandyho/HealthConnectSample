@@ -200,7 +200,7 @@ class HealthConnectManager(private val context: Context) {
     /**
      * Deletes an [ExerciseSessionRecord] and underlying data.
      */
-    suspend fun deleteExerciseSession(uid: String) {
+    suspend fun deleteStepSession(uid: String) {
         val exerciseSession = healthConnectClient.readRecord(ExerciseSessionRecord::class, uid)
         healthConnectClient.deleteRecords(
             ExerciseSessionRecord::class,
