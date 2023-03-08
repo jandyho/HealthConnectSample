@@ -45,7 +45,7 @@ fun StepSessionInfoColumn(
             onClick(uid)
         }
     ) {
-        val formatter = DateTimeFormatter.ofPattern("yyyy년MM월dd일")
+        val formatter = DateTimeFormatter.ofPattern("yyyy년M월d일")
         Text(
             color = MaterialTheme.colors.primary,
             text = time.format(formatter),

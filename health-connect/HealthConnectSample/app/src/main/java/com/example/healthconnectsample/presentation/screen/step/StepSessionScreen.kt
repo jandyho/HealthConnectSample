@@ -82,57 +82,71 @@ fun StepSessionScreen(
     }
 
     if (uiState != StepSessionViewModel.UiState.Uninitialized) {
-        if (stepsList.isNotEmpty()) {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 160.dp)
-            ) {
-                val appInfo = stepsList.first().sourceAppInfo
-                appInfo?.let {
-                    item {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Image(
-                                modifier = Modifier
-                                    .padding(4.dp, 2.dp)
-                                    .height(16.dp)
-                                    .width(16.dp),
-                                painter = rememberDrawablePainter(drawable = it.icon),
-                                contentDescription = "App Icon"
-                            )
-                            Text(
-                                text = it.appLabel,
-                                fontStyle = FontStyle.Italic
-                            )
-                        }
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 160.dp)
+        ) {
+            if (stepsList.isNotEmpty()) {
+                val today = ZonedDateTime.now()
+                val lastMonth = today.minusDays(today.dayOfMonth.toLong())
+                stepsList.filter { it.endTime.month == today.month }.let { list ->
+                    list.first().sourceAppInfo?.let {
+                        item { getAppLabel(it) }
+                        item { getSum(list) }
                     }
-                    item {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            val sum = stepsList.sumOf { it.count.toInt() }
-                            Text(
-                                text = String.format("%,d steps", sum),
-                                fontStyle = FontStyle.Italic
-                            )
-                        }
-                    }
-                }
+                    items(items = list) { steps -> getStepSession(steps, onDetailsClick) }
 
-                items(items = stepsList) { steps ->
-                    steps.sourceAppInfo
-                    StepSessionRow(
-                        time = steps.endTime,
-                        uid = steps.id,
-                        "Walking",
-                        steps.count
-                    ) { uid ->
-                        onDetailsClick(uid)
+                }
+                stepsList.filter { it.endTime.month == lastMonth.month }.let { list ->
+                    list.first().sourceAppInfo?.let {
+                        item { getAppLabel(it) }
+                        item { getSum(list) }
                     }
+                    items(items = list) { steps -> getStepSession(steps, onDetailsClick) }
+
                 }
             }
         }
     }
+}
+
+@Composable
+private fun getStepSession(steps: StepSession, onDetailsClick: (String) -> Unit) = StepSessionRow(
+time = steps.endTime,
+uid = steps.id,
+"Walking",
+steps.count
+) { uid ->
+    onDetailsClick(uid)
+}
+
+@Composable
+private fun getSum(list: List<StepSession>) = Row(
+verticalAlignment = Alignment.CenterVertically
+) {
+    val sum = list.sumOf { it.count.toInt() }
+    val month = list.first().startTime.month
+    Text(
+        text = String.format("%d월 %,d steps", month.value, sum),
+        fontStyle = FontStyle.Italic
+    )
+}
+
+@Composable
+private fun getAppLabel(it: HealthConnectAppInfo) = Row(
+verticalAlignment = Alignment.CenterVertically
+) {
+    Image(
+        modifier = Modifier
+            .padding(4.dp, 2.dp)
+            .height(16.dp)
+            .width(16.dp),
+        painter = rememberDrawablePainter(drawable = it.icon),
+        contentDescription = "App Icon"
+    )
+    Text(
+        text = it.appLabel,
+        fontStyle = FontStyle.Italic
+    )
 }
 
 @Preview
