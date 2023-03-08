@@ -60,7 +60,7 @@ fun HealthConnectNavigation(
     scaffoldState: ScaffoldState
 ) {
     val scope = rememberCoroutineScope()
-    NavHost(navController = navController, startDestination = Screen.WelcomeScreen.route) {
+    NavHost(navController = navController, startDestination = Screen.StepSessions.route) {
         val availability by healthConnectManager.availability
         composable(Screen.WelcomeScreen.route) {
             WelcomeScreen(
