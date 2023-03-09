@@ -16,10 +16,13 @@
 package com.example.healthconnectsample.presentation.component
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.health.connect.client.records.ExerciseSessionRecord
@@ -36,7 +39,6 @@ import java.util.UUID
 fun StepSessionInfoColumn(
     time: ZonedDateTime,
     uid: String,
-    name: String,
     steps: String,
     onClick: (String) -> Unit = {}
 ) {
@@ -45,13 +47,18 @@ fun StepSessionInfoColumn(
             onClick(uid)
         }
     ) {
-        val formatter = DateTimeFormatter.ofPattern("yyyy년M월d일")
-        Text(
-            color = MaterialTheme.colors.primary,
-            text = time.format(formatter),
-            style = MaterialTheme.typography.caption
-        )
-        Text(String.format("$name : %,d steps", steps.toInt()))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            val formatter = DateTimeFormatter.ofPattern("M월d일")
+            Text(
+                color = MaterialTheme.colors.primary,
+                text = time.format(formatter),
+                style = MaterialTheme.typography.caption
+            )
+            Text(String.format(" %,d steps", steps.toInt()))
+        }
     }
 }
 
@@ -62,7 +69,6 @@ fun StepSessionInfoColumnPreview() {
         StepSessionInfoColumn(
             ZonedDateTime.now(),
             UUID.randomUUID().toString(),
-            "Walking",
             "3000"
         )
     }

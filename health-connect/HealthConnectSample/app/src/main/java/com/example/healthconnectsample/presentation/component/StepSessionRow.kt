@@ -38,7 +38,6 @@ import java.util.UUID
 fun StepSessionRow(
     time: ZonedDateTime,
     uid: String,
-    name: String,
     steps: String,
     onDetailsClick: (String) -> Unit = {}
 ) {
@@ -52,7 +51,6 @@ fun StepSessionRow(
         StepSessionInfoColumn(
             time = time,
             uid = uid,
-            name = name,
             steps = steps,
             onClick = onDetailsClick
         )
@@ -67,7 +65,6 @@ fun StepSessionRowPreview() {
         StepSessionRow(
             ZonedDateTime.now(),
             UUID.randomUUID().toString(),
-            "Walking",
             "3000"
         )
     }

@@ -42,6 +42,7 @@ import com.example.healthconnectsample.presentation.component.StepSessionRow
 import com.example.healthconnectsample.presentation.theme.HealthConnectTheme
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 /**
@@ -97,6 +98,7 @@ fun StepSessionScreen(
 
                 }
                 stepsList.filter { it.endTime.month == lastMonth.month }.let { list ->
+                    item { Text("") }
                     list.first().sourceAppInfo?.let {
                         item { getAppLabel(it) }
                         item { getSum(list) }
@@ -111,10 +113,9 @@ fun StepSessionScreen(
 
 @Composable
 private fun getStepSession(steps: StepSession, onDetailsClick: (String) -> Unit) = StepSessionRow(
-time = steps.endTime,
-uid = steps.id,
-"Walking",
-steps.count
+    time = steps.endTime,
+    uid = steps.id,
+    steps.count
 ) { uid ->
     onDetailsClick(uid)
 }
@@ -124,9 +125,9 @@ private fun getSum(list: List<StepSession>) = Row(
 verticalAlignment = Alignment.CenterVertically
 ) {
     val sum = list.sumOf { it.count.toInt() }
-    val month = list.first().startTime.month
+    val formatter = DateTimeFormatter.ofPattern("yyyy년 M월")
     Text(
-        text = String.format("%d월 %,d steps", month.value, sum),
+        text = String.format("%s %,d steps", list.first().startTime.format(formatter), sum),
         fontStyle = FontStyle.Italic
     )
 }

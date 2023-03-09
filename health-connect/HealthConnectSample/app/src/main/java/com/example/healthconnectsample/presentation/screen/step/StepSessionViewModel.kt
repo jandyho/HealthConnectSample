@@ -105,7 +105,7 @@ class StepSessionViewModel(private val healthConnectManager: HealthConnectManage
     }
 
     private suspend fun readStepSessions() {
-        val start = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).minusDays(90)
+        val start = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).minusDays(92)
 //        val today = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("Asia/Seoul"))
         stepsList.value = healthConnectManager.readStepSession(start.toInstant())
 //        getStepsByMonth()
