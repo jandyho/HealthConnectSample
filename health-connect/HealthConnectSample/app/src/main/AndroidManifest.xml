@@ -12,7 +12,7 @@
      limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.healthconnectsample">
+    package="com.jandyho.healthconnectsample">
     <uses-permission android:name="android.permission.health.READ_HEART_RATE"/>
     <uses-permission android:name="android.permission.health.WRITE_HEART_RATE"/>
     <uses-permission android:name="android.permission.health.READ_STEPS"/>
@@ -33,12 +33,12 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name="com.example.healthconnectsample.presentation.BaseApplication"
+        android:name="com.jandyho.healthconnectsample.presentation.BaseApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthConnect">
         <activity
-            android:name="com.example.healthconnectsample.presentation.MainActivity"
+            android:name="com.jandyho.healthconnectsample.presentation.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.HealthConnect">
             <intent-filter>
