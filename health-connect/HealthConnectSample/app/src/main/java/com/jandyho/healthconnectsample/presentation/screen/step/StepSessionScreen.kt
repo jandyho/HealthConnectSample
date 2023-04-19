@@ -87,22 +87,32 @@ fun StepSessionScreen(
             if (stepsList.isNotEmpty()) {
                 val today = ZonedDateTime.now()
                 val lastMonth = today.minusDays(today.dayOfMonth.toLong())
+                val lastTwoMonth = today.minusDays(today.dayOfMonth.toLong() + lastMonth.dayOfMonth.toLong())
                 stepsList.filter { it.endTime.month == today.month }.let { list ->
+                    if (list.isEmpty()) return@let
                     list.first().sourceAppInfo?.let {
                         item { getAppLabel(it) }
                         item { getSum(list) }
                     }
                     items(items = list) { steps -> getStepSession(steps, onDetailsClick) }
-
                 }
                 stepsList.filter { it.endTime.month == lastMonth.month }.let { list ->
+                    if (list.isEmpty()) return@let
                     item { Text("") }
                     list.first().sourceAppInfo?.let {
                         item { getAppLabel(it) }
                         item { getSum(list) }
                     }
                     items(items = list) { steps -> getStepSession(steps, onDetailsClick) }
-
+                }
+                stepsList.filter { it.endTime.month == lastTwoMonth.month }.let { list ->
+                    if (list.isEmpty()) return@let
+                    item { Text("") }
+                    list.first().sourceAppInfo?.let {
+                        item { getAppLabel(it) }
+                        item { getSum(list) }
+                    }
+                    items(items = list) { steps -> getStepSession(steps, onDetailsClick) }
                 }
             }
         }
