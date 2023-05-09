@@ -55,7 +55,8 @@ fun FormattedUpsertionChange(change: UpsertionChange) {
                     activity.startZoneOffset
                 ),
                 recordType = stringResource(R.string.differential_changes_type_exercise_session),
-                dataSource = change.record.metadata.dataOrigin.packageName
+                dataSource = change.record.metadata.dataOrigin.packageName,
+                value = activity.toString()
             )
         }
         is StepsRecord -> {
@@ -63,7 +64,8 @@ fun FormattedUpsertionChange(change: UpsertionChange) {
             FormattedChangeRow(
                 startTime = dateTimeWithOffsetOrDefault(steps.startTime, steps.startZoneOffset),
                 recordType = stringResource(R.string.differential_changes_type_steps),
-                dataSource = change.record.metadata.dataOrigin.packageName
+                dataSource = change.record.metadata.dataOrigin.packageName,
+                value = steps.count.toString()
             )
         }
         is SpeedRecord -> {
@@ -71,6 +73,7 @@ fun FormattedUpsertionChange(change: UpsertionChange) {
             FormattedChangeRow(
                 startTime = dateTimeWithOffsetOrDefault(speed.startTime, speed.startZoneOffset),
                 recordType = stringResource(R.string.differential_changes_type_speed_series),
+                value = speed.toString(),
                 dataSource = change.record.metadata.dataOrigin.packageName
             )
         }
@@ -79,6 +82,7 @@ fun FormattedUpsertionChange(change: UpsertionChange) {
             FormattedChangeRow(
                 startTime = dateTimeWithOffsetOrDefault(hr.startTime, hr.startZoneOffset),
                 recordType = stringResource(R.string.differential_changes_type_heart_rate_series),
+                value = hr.toString(),
                 dataSource = change.record.metadata.dataOrigin.packageName
             )
         }
@@ -90,6 +94,7 @@ fun FormattedUpsertionChange(change: UpsertionChange) {
                     calories.startZoneOffset
                 ),
                 recordType = stringResource(R.string.differential_changes_type_total_calories),
+                value = calories.energy.inCalories.toString(),
                 dataSource = change.record.metadata.dataOrigin.packageName
             )
         }
@@ -98,6 +103,7 @@ fun FormattedUpsertionChange(change: UpsertionChange) {
             FormattedChangeRow(
                 startTime = dateTimeWithOffsetOrDefault(sleep.startTime, sleep.startZoneOffset),
                 recordType = stringResource(R.string.differential_changes_type_sleep_session),
+                value = sleep.toString(),
                 dataSource = change.record.metadata.dataOrigin.packageName
             )
         }
@@ -106,6 +112,7 @@ fun FormattedUpsertionChange(change: UpsertionChange) {
             FormattedChangeRow(
                 startTime = dateTimeWithOffsetOrDefault(sleep.startTime, sleep.startZoneOffset),
                 recordType = stringResource(R.string.differential_changes_type_sleep_stage),
+                value = sleep.toString(),
                 dataSource = change.record.metadata.dataOrigin.packageName
             )
         }
@@ -114,6 +121,7 @@ fun FormattedUpsertionChange(change: UpsertionChange) {
             FormattedChangeRow(
                 startTime = dateTimeWithOffsetOrDefault(weight.time, weight.zoneOffset),
                 recordType = stringResource(R.string.differential_changes_type_weight),
+                value = weight.toString(),
                 dataSource = change.record.metadata.dataOrigin.packageName
             )
         }
@@ -125,6 +133,7 @@ fun FormattedUpsertionChange(change: UpsertionChange) {
                     distance.startZoneOffset
                 ),
                 recordType = stringResource(R.string.differential_changes_type_distance),
+                value = distance.distance.toString(),
                 dataSource = change.record.metadata.dataOrigin.packageName
             )
         }
@@ -164,7 +173,8 @@ fun FormattedDeletionChange(change: DeletionChange) {
 fun FormattedChangeRow(
     startTime: ZonedDateTime,
     recordType: String,
-    dataSource: String
+    dataSource: String,
+    value: String = ""
 ) {
     Column(
         modifier = Modifier
@@ -179,6 +189,7 @@ fun FormattedChangeRow(
                 text = stringResource(R.string.differential_changes_upserted),
                 style = MaterialTheme.typography.body2
             )
+            Text(value)
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
