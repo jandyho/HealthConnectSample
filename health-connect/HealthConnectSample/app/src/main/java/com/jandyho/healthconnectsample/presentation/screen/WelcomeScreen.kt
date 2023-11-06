@@ -36,6 +36,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.health.connect.client.HealthConnectClient.Companion.SDK_AVAILABLE
+import androidx.health.connect.client.HealthConnectClient.Companion.SDK_UNAVAILABLE
+import androidx.health.connect.client.HealthConnectClient.Companion.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -50,7 +53,7 @@ import com.jandyho.healthconnectsample.presentation.theme.HealthConnectTheme
  */
 @Composable
 fun WelcomeScreen(
-    healthConnectAvailability: com.jandyho.healthconnectsample.data.HealthConnectAvailability,
+    healthConnectAvailability: Int,
     onResumeAvailabilityCheck: () -> Unit,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 ) {
@@ -96,9 +99,9 @@ fun WelcomeScreen(
         )
         Spacer(modifier = Modifier.height(32.dp))
         when (healthConnectAvailability) {
-            com.jandyho.healthconnectsample.data.HealthConnectAvailability.INSTALLED -> InstalledMessage()
-            com.jandyho.healthconnectsample.data.HealthConnectAvailability.NOT_INSTALLED -> NotInstalledMessage()
-            com.jandyho.healthconnectsample.data.HealthConnectAvailability.NOT_SUPPORTED -> NotSupportedMessage()
+            SDK_AVAILABLE -> InstalledMessage()
+            SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED -> NotInstalledMessage()
+            SDK_UNAVAILABLE -> NotSupportedMessage()
         }
     }
 }
@@ -108,7 +111,7 @@ fun WelcomeScreen(
 fun InstalledMessagePreview() {
     HealthConnectTheme {
         WelcomeScreen(
-            healthConnectAvailability = com.jandyho.healthconnectsample.data.HealthConnectAvailability.INSTALLED,
+            healthConnectAvailability = SDK_AVAILABLE,
             onResumeAvailabilityCheck = {}
         )
     }
@@ -119,7 +122,7 @@ fun InstalledMessagePreview() {
 fun NotInstalledMessagePreview() {
     HealthConnectTheme {
         WelcomeScreen(
-            healthConnectAvailability = com.jandyho.healthconnectsample.data.HealthConnectAvailability.NOT_INSTALLED,
+            healthConnectAvailability = SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED,
             onResumeAvailabilityCheck = {}
         )
     }
@@ -130,7 +133,7 @@ fun NotInstalledMessagePreview() {
 fun NotSupportedMessagePreview() {
     HealthConnectTheme {
         WelcomeScreen(
-            healthConnectAvailability = com.jandyho.healthconnectsample.data.HealthConnectAvailability.NOT_SUPPORTED,
+            healthConnectAvailability = SDK_UNAVAILABLE,
             onResumeAvailabilityCheck = {}
         )
     }

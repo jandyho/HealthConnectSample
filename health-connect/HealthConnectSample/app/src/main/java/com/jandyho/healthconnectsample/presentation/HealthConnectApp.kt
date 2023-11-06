@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
+import androidx.health.connect.client.HealthConnectClient.Companion.SDK_AVAILABLE
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.jandyho.healthconnectsample.R
@@ -71,7 +72,7 @@ fun HealthConnectApp(healthConnectManager: com.jandyho.healthconnectsample.data.
                     navigationIcon = {
                         IconButton(
                             onClick = {
-                                if (availability == com.jandyho.healthconnectsample.data.HealthConnectAvailability.INSTALLED) {
+                                if (availability == SDK_AVAILABLE) {
                                     scope.launch {
                                         scaffoldState.drawerState.open()
                                     }
@@ -87,7 +88,7 @@ fun HealthConnectApp(healthConnectManager: com.jandyho.healthconnectsample.data.
                 )
             },
             drawerContent = {
-                if (availability == com.jandyho.healthconnectsample.data.HealthConnectAvailability.INSTALLED) {
+                if (availability == SDK_AVAILABLE) {
                     Drawer(
                         scope = scope,
                         scaffoldState = scaffoldState,
