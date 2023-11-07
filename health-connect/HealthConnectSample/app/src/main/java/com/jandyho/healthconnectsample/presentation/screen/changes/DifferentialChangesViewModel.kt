@@ -29,7 +29,6 @@ import androidx.health.connect.client.records.DistanceRecord
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.SleepSessionRecord
-import androidx.health.connect.client.records.SleepStageRecord
 import androidx.health.connect.client.records.SpeedRecord
 import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.records.TotalCaloriesBurnedRecord
@@ -52,7 +51,6 @@ class DifferentialChangesViewModel(private val healthConnectManager: com.jandyho
         TotalCaloriesBurnedRecord::class,
         HeartRateRecord::class,
         SleepSessionRecord::class,
-        SleepStageRecord::class,
         WeightRecord::class
     )
 
