@@ -84,7 +84,7 @@ class HealthConnectManager(private val context: Context) {
         packages.associate {
             val icon = try {
                 context.packageManager.getApplicationIcon(it.activityInfo.packageName)
-            } catch(e: NotFoundException) {
+            } catch (e: NotFoundException) {
                 null
             }
             val label = context.packageManager.getApplicationLabel(it.activityInfo.applicationInfo)
@@ -116,14 +116,15 @@ class HealthConnectManager(private val context: Context) {
      * [PermissionController.createRequestPermissionResultContract].
      */
     suspend fun hasAllPermissions(permissions: Set<String>): Boolean {
-        return healthConnectClient.permissionController.getGrantedPermissions().containsAll(permissions)
+        return healthConnectClient.permissionController.getGrantedPermissions()
+            .containsAll(permissions)
     }
 
     fun requestPermissionsActivityContract(): ActivityResultContract<Set<String>, Set<String>> {
         return PermissionController.createRequestPermissionResultContract()
     }
 
-    suspend fun revokeAllPermissions(){
+    suspend fun revokeAllPermissions() {
         healthConnectClient.permissionController.revokeAllPermissions()
     }
 
@@ -146,7 +147,7 @@ class HealthConnectManager(private val context: Context) {
         val request = ReadRecordsRequest(
             recordType = StepsRecord::class,
             timeRangeFilter = TimeRangeFilter.after(start),
-            dataOriginFilter = setOf( DataOrigin("com.sec.android.app.shealth"))
+            dataOriginFilter = setOf(DataOrigin("com.sec.android.app.shealth"))
         )
         val response = healthConnectClient.readRecords(request)
         return response.records.reversed().map {
@@ -166,7 +167,10 @@ class HealthConnectManager(private val context: Context) {
      * Writes an [ExerciseSessionRecord] to Health Connect, and additionally writes underlying data for
      * the session too, such as [StepsRecord], [DistanceRecord] etc.
      */
-    suspend fun writeExerciseSession(start: ZonedDateTime, end: ZonedDateTime): InsertRecordsResponse {
+    suspend fun writeExerciseSession(
+        start: ZonedDateTime,
+        end: ZonedDateTime,
+    ): InsertRecordsResponse {
         return healthConnectClient.insertRecords(
             listOf(
                 ExerciseSessionRecord(
@@ -232,7 +236,7 @@ class HealthConnectManager(private val context: Context) {
      * Reads aggregated data and raw data for selected data types, for a given [ExerciseSessionRecord].
      */
     suspend fun readAssociatedSessionData(
-        uid: String
+        uid: String,
     ): ExerciseSessionData {
         val exerciseSession = healthConnectClient.readRecord(ExerciseSessionRecord::class, uid)
         // Use the start time and end time from the session, for reading raw and aggregate data.
@@ -287,7 +291,6 @@ class HealthConnectManager(private val context: Context) {
      */
     suspend fun deleteAllSleepData() {
         val now = Instant.now()
-        healthConnectClient.deleteRecords(SleepStageRecord::class, TimeRangeFilter.before(now))
         healthConnectClient.deleteRecords(SleepSessionRecord::class, TimeRangeFilter.before(now))
     }
 
@@ -454,7 +457,7 @@ class HealthConnectManager(private val context: Context) {
      */
     private fun generateSleepStages(
         start: ZonedDateTime,
-        end: ZonedDateTime
+        end: ZonedDateTime,
     ): List<SleepSessionRecord.Stage> {
         val sleepStages = mutableListOf<SleepSessionRecord.Stage>()
         var stageStart = start
@@ -478,7 +481,7 @@ class HealthConnectManager(private val context: Context) {
      */
     private suspend inline fun <reified T : Record> readData(
         timeRangeFilter: TimeRangeFilter,
-        dataOriginFilter: Set<DataOrigin> = setOf()
+        dataOriginFilter: Set<DataOrigin> = setOf(),
     ): List<T> {
         val request = ReadRecordsRequest(
             recordType = T::class,
@@ -490,7 +493,7 @@ class HealthConnectManager(private val context: Context) {
 
     private fun buildHeartRateSeries(
         sessionStartTime: ZonedDateTime,
-        sessionEndTime: ZonedDateTime
+        sessionEndTime: ZonedDateTime,
     ): HeartRateRecord {
         val samples = mutableListOf<HeartRateRecord.Sample>()
         var time = sessionStartTime
@@ -514,7 +517,7 @@ class HealthConnectManager(private val context: Context) {
 
     private fun buildSpeedSeries(
         sessionStartTime: ZonedDateTime,
-        sessionEndTime: ZonedDateTime
+        sessionEndTime: ZonedDateTime,
     ) = SpeedRecord(
         startTime = sessionStartTime.toInstant(),
         startZoneOffset = sessionStartTime.offset,
