@@ -27,20 +27,31 @@ import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.SpeedRecord
 import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.records.TotalCaloriesBurnedRecord
+import androidx.health.connect.client.records.metadata.DataOrigin
+import androidx.health.connect.client.request.ReadRecordsRequest
+import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.jandyho.healthconnectsample.data.HealthConnectAppsManager
+import com.jandyho.healthconnectsample.data.HealthConnectManager
+import com.jandyho.healthconnectsample.data.StepSession
+import com.jandyho.healthconnectsample.data.dateTimeWithOffsetOrDefault
 import java.io.IOException
 import java.time.Duration
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 import kotlin.random.Random
 import kotlinx.coroutines.launch
 
-class StepSessionViewModel(private val healthConnectManager: com.jandyho.healthconnectsample.data.HealthConnectManager) :
+class StepSessionViewModel(
+    private val healthConnectManager: HealthConnectManager,
+    healthConnectAppsManager: HealthConnectAppsManager
+) :
     ViewModel() {
-    private val healthConnectCompatibleApps = healthConnectManager.healthConnectCompatibleApps
+    private val healthConnectCompatibleApps = healthConnectAppsManager.healthConnectCompatibleApps
 
     val permissions = setOf(
         HealthPermission.getWritePermission(ExerciseSessionRecord::class),
@@ -103,9 +114,22 @@ class StepSessionViewModel(private val healthConnectManager: com.jandyho.healthc
 
     private suspend fun readStepSessions() {
         val start = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).minusDays(92)
-//        val today = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("Asia/Seoul"))
+////        val today = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("Asia/Seoul"))
+//        stepsList.value = healthConnectManager.readStepSession(start.toInstant())
+////        getStepsByMonth()
+
         stepsList.value = healthConnectManager.readStepSession(start.toInstant())
-//        getStepsByMonth()
+            .map { record ->
+                val packageName = record.metadata.dataOrigin.packageName
+                StepSession(
+                    record.startTime.truncatedTo(ChronoUnit.DAYS).atZone(ZoneId.of("GMT")),
+                    record.endTime.truncatedTo(ChronoUnit.DAYS).atZone(ZoneId.of("GMT")),
+                    record.metadata.id,
+                    "Walking",
+                    record.count.toString(),
+                    sourceAppInfo = healthConnectCompatibleApps[packageName],
+                )
+            }
     }
 
     private suspend fun getStepsByMonth() {
@@ -115,10 +139,10 @@ class StepSessionViewModel(private val healthConnectManager: com.jandyho.healthc
         val lastMonthStart = lastMonth.minusDays(lastMonthDays.toLong() - 1)
         lastMonth.month.value
         val start = lastMonth.plusDays(1)
-        var lastSession = healthConnectManager.readStepSession(lastMonthStart.toInstant())
-        val sessions = healthConnectManager.readStepSession(start.toInstant())
-        lastSession.toMutableList().addAll(sessions)
-        stepsList.value = lastSession
+//        var lastSession = healthConnectManager.readStepSession(lastMonthStart.toInstant())
+//        val sessions = healthConnectManager.readStepSession(start.toInstant())
+//        lastSession.toMutableList().addAll(sessions)
+//        stepsList.value = lastSession
     }
 
     /**
@@ -160,13 +184,15 @@ class StepSessionViewModel(private val healthConnectManager: com.jandyho.healthc
 }
 
 class StepSessionViewModelFactory(
-    private val healthConnectManager: com.jandyho.healthconnectsample.data.HealthConnectManager
+    private val healthConnectManager: HealthConnectManager,
+    private val healthConnectAppsManager: HealthConnectAppsManager
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(StepSessionViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return StepSessionViewModel(
-                healthConnectManager = healthConnectManager
+                healthConnectManager = healthConnectManager,
+                healthConnectAppsManager = healthConnectAppsManager
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

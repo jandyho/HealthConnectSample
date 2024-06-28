@@ -57,12 +57,12 @@ class SleepSessionViewModel(private val healthConnectManager: com.jandyho.health
         }
     }
 
-    fun generateSleepData() {
+    fun generateSleepData(notes: Array<String>) {
         viewModelScope.launch {
             tryWithPermissionsCheck {
                 // Delete all existing sleep data before generating new random sleep data.
                 healthConnectManager.deleteAllSleepData()
-                healthConnectManager.generateSleepData()
+                healthConnectManager.generateSleepData(notes)
                 sessionsList.value = healthConnectManager.readSleepSessions()
             }
         }

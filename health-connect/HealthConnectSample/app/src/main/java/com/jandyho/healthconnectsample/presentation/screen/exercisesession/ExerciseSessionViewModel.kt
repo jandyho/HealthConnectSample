@@ -31,6 +31,8 @@ import androidx.health.connect.client.records.TotalCaloriesBurnedRecord
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.jandyho.healthconnectsample.data.HealthConnectAppsManager
+import com.jandyho.healthconnectsample.data.HealthConnectManager
 import com.jandyho.healthconnectsample.data.dateTimeWithOffsetOrDefault
 import java.io.IOException
 import java.time.Duration
@@ -41,9 +43,11 @@ import java.util.UUID
 import kotlin.random.Random
 import kotlinx.coroutines.launch
 
-class ExerciseSessionViewModel(private val healthConnectManager: com.jandyho.healthconnectsample.data.HealthConnectManager) :
-    ViewModel() {
-    private val healthConnectCompatibleApps = healthConnectManager.healthConnectCompatibleApps
+class ExerciseSessionViewModel(
+    private val healthConnectManager: HealthConnectManager,
+    healthConnectAppsManager: HealthConnectAppsManager
+) : ViewModel() {
+    private val healthConnectCompatibleApps = healthConnectAppsManager.healthConnectCompatibleApps
 
     val permissions = setOf(
         HealthPermission.getWritePermission(ExerciseSessionRecord::class),
@@ -162,13 +166,15 @@ class ExerciseSessionViewModel(private val healthConnectManager: com.jandyho.hea
 }
 
 class ExerciseSessionViewModelFactory(
-    private val healthConnectManager: com.jandyho.healthconnectsample.data.HealthConnectManager
+    private val healthConnectManager: HealthConnectManager,
+    private val healthConnectAppsManager: HealthConnectAppsManager
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ExerciseSessionViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return ExerciseSessionViewModel(
-                healthConnectManager = healthConnectManager
+                healthConnectManager = healthConnectManager,
+                healthConnectAppsManager = healthConnectAppsManager
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
