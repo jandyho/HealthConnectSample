@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.healthconnectsample.presentation.component
+package com.jandyho.healthconnectsample.presentation.component
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
@@ -34,9 +34,9 @@ import androidx.compose.ui.unit.dp
 import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.SpeedRecord
 import androidx.health.connect.client.records.metadata.Metadata
-import com.example.healthconnectsample.R
-import com.example.healthconnectsample.data.dateTimeWithOffsetOrDefault
-import com.example.healthconnectsample.presentation.theme.HealthConnectTheme
+import com.jandyho.healthconnectsample.R
+import com.jandyho.healthconnectsample.data.dateTimeWithOffsetOrDefault
+import com.jandyho.healthconnectsample.presentation.theme.HealthConnectTheme
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset

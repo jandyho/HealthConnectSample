@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.healthconnectsample.presentation.component
+package com.jandyho.healthconnectsample.presentation.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,8 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.health.connect.client.records.SleepSessionRecord
-import com.example.healthconnectsample.formatDisplayTimeStartEnd
-import com.example.healthconnectsample.presentation.theme.HealthConnectTheme
+import com.jandyho.healthconnectsample.formatDisplayTimeStartEnd
+import com.jandyho.healthconnectsample.presentation.theme.HealthConnectTheme
 import java.time.ZonedDateTime
 
 @Composable

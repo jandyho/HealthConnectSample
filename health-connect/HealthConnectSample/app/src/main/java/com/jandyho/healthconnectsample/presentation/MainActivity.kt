@@ -27,13 +27,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val healthConnectManager = (application as BaseApplication).healthConnectManager
-        val healthConnectAppsManager = (application as BaseApplication).healthConnectAppsManager
 
         setContent {
-            HealthConnectApp(
-                healthConnectManager = healthConnectManager,
-                healthConnectAppsManager = healthConnectAppsManager
-            )
+            HealthConnectApp(healthConnectManager = healthConnectManager)
        }
     }
 }

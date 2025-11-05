@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.healthconnectsample.presentation.screen
+package com.jandyho.healthconnectsample.presentation.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -42,11 +42,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.example.healthconnectsample.R
-import com.example.healthconnectsample.presentation.component.InstalledMessage
-import com.example.healthconnectsample.presentation.component.NotInstalledMessage
-import com.example.healthconnectsample.presentation.component.NotSupportedMessage
-import com.example.healthconnectsample.presentation.theme.HealthConnectTheme
+import com.jandyho.healthconnectsample.R
+import com.jandyho.healthconnectsample.presentation.component.InstalledMessage
+import com.jandyho.healthconnectsample.presentation.component.NotInstalledMessage
+import com.jandyho.healthconnectsample.presentation.component.NotSupportedMessage
+import com.jandyho.healthconnectsample.presentation.theme.HealthConnectTheme
 
 /**
  * Welcome screen shown when the app is first launched.

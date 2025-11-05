@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.healthconnectsample.presentation.screen.sleepsession
+package com.jandyho.healthconnectsample.presentation.screen.sleepsession
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,10 +34,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.health.connect.client.records.SleepSessionRecord
-import com.example.healthconnectsample.R
-import com.example.healthconnectsample.data.SleepSessionData
-import com.example.healthconnectsample.presentation.component.SleepSessionRow
-import com.example.healthconnectsample.presentation.theme.HealthConnectTheme
+import com.jandyho.healthconnectsample.R
+import com.jandyho.healthconnectsample.data.SleepSessionData
+import com.jandyho.healthconnectsample.presentation.component.SleepSessionRow
+import com.jandyho.healthconnectsample.presentation.theme.HealthConnectTheme
 import java.time.Duration
 import java.time.ZonedDateTime
 import java.util.UUID

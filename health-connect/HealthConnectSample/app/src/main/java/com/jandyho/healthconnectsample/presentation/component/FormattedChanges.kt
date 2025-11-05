@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.healthconnectsample.presentation.component
+package com.jandyho.healthconnectsample.presentation.component
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement

@@ -45,10 +45,7 @@ const val TAG = "Health Connect sample"
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun HealthConnectApp(
-    healthConnectManager: HealthConnectManager,
-    healthConnectAppsManager: HealthConnectAppsManager
-) {
+fun HealthConnectApp(healthConnectManager: HealthConnectManager) {
     HealthConnectTheme {
         val scaffoldState = rememberScaffoldState()
         val navController = rememberNavController()
@@ -106,7 +103,6 @@ fun HealthConnectApp(
         ) {
             HealthConnectNavigation(
                 healthConnectManager = healthConnectManager,
-                healthConnectAppsManager = healthConnectAppsManager,
                 navController = navController,
                 scaffoldState = scaffoldState
             )

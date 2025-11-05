@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.healthconnectsample.presentation.screen.recordlist
+package com.jandyho.healthconnectsample.presentation.screen.recordlist
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -39,9 +39,9 @@ import androidx.health.connect.client.records.Record
 import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.records.TotalCaloriesBurnedRecord
 import androidx.health.connect.client.records.metadata.Metadata
-import com.example.healthconnectsample.R
-import com.example.healthconnectsample.formatDisplayTimeStartEnd
-import com.example.healthconnectsample.presentation.theme.HealthConnectTheme
+import com.jandyho.healthconnectsample.R
+import com.jandyho.healthconnectsample.formatDisplayTimeStartEnd
+import com.jandyho.healthconnectsample.presentation.theme.HealthConnectTheme
 import java.time.Instant
 import java.time.ZonedDateTime
 import java.time.ZonedDateTime.now

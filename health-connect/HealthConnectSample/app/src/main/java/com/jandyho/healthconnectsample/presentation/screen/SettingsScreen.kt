@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.healthconnectsample.presentation.screen
+package com.jandyho.healthconnectsample.presentation.screen
 
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.health.connect.client.HealthConnectClient
-import com.example.healthconnectsample.R
+import com.jandyho.healthconnectsample.R
 
 /**
  * Settings screen for managing Health Connect preferences.

@@ -16,14 +16,10 @@
 package com.jandyho.healthconnectsample.presentation
 
 import android.app.Application
-import androidx.health.connect.client.HealthConnectClient
+import com.jandyho.healthconnectsample.data.HealthConnectManager
 
 class BaseApplication : Application() {
     val healthConnectManager by lazy {
-        com.jandyho.healthconnectsample.data.HealthConnectManager(HealthConnectClient.getOrCreate(this))
-            .also { it.checkAvailability(this) }
-    }
-    val healthConnectAppsManager by lazy {
-        com.jandyho.healthconnectsample.data.HealthConnectAppsManager(this)
+        HealthConnectManager(this)
     }
 }

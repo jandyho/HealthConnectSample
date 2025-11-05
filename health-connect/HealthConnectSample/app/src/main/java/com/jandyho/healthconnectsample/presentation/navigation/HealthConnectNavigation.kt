@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.healthconnectsample.presentation.navigation
+package com.jandyho.healthconnectsample.presentation.navigation
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.material.ScaffoldState
@@ -25,31 +25,34 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
-import com.example.healthconnectsample.data.HealthConnectManager
-import com.example.healthconnectsample.presentation.screen.SettingsScreen
-import com.example.healthconnectsample.presentation.screen.WelcomeScreen
-import com.example.healthconnectsample.presentation.screen.changes.DifferentialChangesScreen
-import com.example.healthconnectsample.presentation.screen.changes.DifferentialChangesViewModel
-import com.example.healthconnectsample.presentation.screen.changes.DifferentialChangesViewModelFactory
-import com.example.healthconnectsample.presentation.screen.exercisesession.ExerciseSessionScreen
-import com.example.healthconnectsample.presentation.screen.exercisesession.ExerciseSessionViewModel
-import com.example.healthconnectsample.presentation.screen.exercisesession.ExerciseSessionViewModelFactory
-import com.example.healthconnectsample.presentation.screen.exercisesessiondetail.ExerciseSessionDetailScreen
-import com.example.healthconnectsample.presentation.screen.exercisesessiondetail.ExerciseSessionDetailViewModel
-import com.example.healthconnectsample.presentation.screen.exercisesessiondetail.ExerciseSessionDetailViewModelFactory
-import com.example.healthconnectsample.presentation.screen.inputreadings.InputReadingsScreen
-import com.example.healthconnectsample.presentation.screen.inputreadings.InputReadingsViewModel
-import com.example.healthconnectsample.presentation.screen.inputreadings.InputReadingsViewModelFactory
-import com.example.healthconnectsample.presentation.screen.privacypolicy.PrivacyPolicyScreen
-import com.example.healthconnectsample.presentation.screen.recordlist.RecordType
-import com.example.healthconnectsample.presentation.screen.recordlist.RecordListScreen
-import com.example.healthconnectsample.presentation.screen.recordlist.RecordListScreenViewModel
-import com.example.healthconnectsample.presentation.screen.recordlist.RecordListViewModelFactory
-import com.example.healthconnectsample.presentation.screen.recordlist.SeriesRecordsType
-import com.example.healthconnectsample.presentation.screen.sleepsession.SleepSessionScreen
-import com.example.healthconnectsample.presentation.screen.sleepsession.SleepSessionViewModel
-import com.example.healthconnectsample.presentation.screen.sleepsession.SleepSessionViewModelFactory
-import com.example.healthconnectsample.showExceptionSnackbar
+import com.jandyho.healthconnectsample.data.HealthConnectManager
+import com.jandyho.healthconnectsample.presentation.screen.SettingsScreen
+import com.jandyho.healthconnectsample.presentation.screen.WelcomeScreen
+import com.jandyho.healthconnectsample.presentation.screen.changes.DifferentialChangesScreen
+import com.jandyho.healthconnectsample.presentation.screen.changes.DifferentialChangesViewModel
+import com.jandyho.healthconnectsample.presentation.screen.changes.DifferentialChangesViewModelFactory
+import com.jandyho.healthconnectsample.presentation.screen.exercisesession.ExerciseSessionScreen
+import com.jandyho.healthconnectsample.presentation.screen.exercisesession.ExerciseSessionViewModel
+import com.jandyho.healthconnectsample.presentation.screen.exercisesession.ExerciseSessionViewModelFactory
+import com.jandyho.healthconnectsample.presentation.screen.exercisesessiondetail.ExerciseSessionDetailScreen
+import com.jandyho.healthconnectsample.presentation.screen.exercisesessiondetail.ExerciseSessionDetailViewModel
+import com.jandyho.healthconnectsample.presentation.screen.exercisesessiondetail.ExerciseSessionDetailViewModelFactory
+import com.jandyho.healthconnectsample.presentation.screen.inputreadings.InputReadingsScreen
+import com.jandyho.healthconnectsample.presentation.screen.inputreadings.InputReadingsViewModel
+import com.jandyho.healthconnectsample.presentation.screen.inputreadings.InputReadingsViewModelFactory
+import com.jandyho.healthconnectsample.presentation.screen.privacypolicy.PrivacyPolicyScreen
+import com.jandyho.healthconnectsample.presentation.screen.recordlist.RecordType
+import com.jandyho.healthconnectsample.presentation.screen.recordlist.RecordListScreen
+import com.jandyho.healthconnectsample.presentation.screen.recordlist.RecordListScreenViewModel
+import com.jandyho.healthconnectsample.presentation.screen.recordlist.RecordListViewModelFactory
+import com.jandyho.healthconnectsample.presentation.screen.recordlist.SeriesRecordsType
+import com.jandyho.healthconnectsample.presentation.screen.sleepsession.SleepSessionScreen
+import com.jandyho.healthconnectsample.presentation.screen.sleepsession.SleepSessionViewModel
+import com.jandyho.healthconnectsample.presentation.screen.sleepsession.SleepSessionViewModelFactory
+import com.jandyho.healthconnectsample.presentation.screen.step.StepSessionScreen
+import com.jandyho.healthconnectsample.presentation.screen.step.StepSessionViewModel
+import com.jandyho.healthconnectsample.presentation.screen.step.StepSessionViewModelFactory
+import com.jandyho.healthconnectsample.showExceptionSnackbar
 import kotlinx.coroutines.launch
 
 /**
@@ -151,6 +154,47 @@ fun HealthConnectNavigation(
                 },
                 onError = { exception ->
                     showExceptionSnackbar(scaffoldState, scope, exception)
+                },
+                onPermissionsResult = {
+                    viewModel.initialLoad()
+                },
+                onPermissionsLaunch = { values ->
+                    permissionsLauncher.launch(values)}
+            )
+        }
+        composable(Screen.StepSessions.route) {
+            val viewModel: StepSessionViewModel = viewModel(
+                factory = StepSessionViewModelFactory(
+                    healthConnectManager = healthConnectManager
+                )
+            )
+            val permissionsGranted by viewModel.permissionsGranted
+            val stepsList by viewModel.stepsList
+            val permissions = viewModel.permissions
+            val onPermissionsResult = {viewModel.initialLoad()}
+            val permissionsLauncher =
+                rememberLauncherForActivityResult(viewModel.permissionsLauncher) {
+                    onPermissionsResult()}
+            StepSessionScreen(
+                permissionsGranted = permissionsGranted,
+                permissions = permissions,
+                stepsList = stepsList,
+                uiState = viewModel.uiState,
+                onInsertClick = {
+                    viewModel.insertStepSession()
+                },
+                onDetailsClick = { uid ->
+                    navController.navigate(Screen.ExerciseSessionDetail.route + "/" + uid)
+                },
+                onDeleteClick = { uid ->
+                    viewModel.deleteStepSession(uid)
+                },
+                onError = { exception ->
+                    com.jandyho.healthconnectsample.showExceptionSnackbar(
+                        scaffoldState,
+                        scope,
+                        exception
+                    )
                 },
                 onPermissionsResult = {
                     viewModel.initialLoad()

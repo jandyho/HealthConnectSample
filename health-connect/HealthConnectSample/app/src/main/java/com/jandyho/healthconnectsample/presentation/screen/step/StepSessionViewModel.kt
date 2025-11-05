@@ -27,16 +27,12 @@ import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.SpeedRecord
 import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.records.TotalCaloriesBurnedRecord
-import androidx.health.connect.client.records.metadata.DataOrigin
-import androidx.health.connect.client.request.ReadRecordsRequest
-import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.jandyho.healthconnectsample.data.HealthConnectAppsManager
 import com.jandyho.healthconnectsample.data.HealthConnectManager
 import com.jandyho.healthconnectsample.data.StepSession
-import com.jandyho.healthconnectsample.data.dateTimeWithOffsetOrDefault
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.time.Duration
 import java.time.ZoneId
@@ -44,14 +40,9 @@ import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 import kotlin.random.Random
-import kotlinx.coroutines.launch
 
-class StepSessionViewModel(
-    private val healthConnectManager: HealthConnectManager,
-    healthConnectAppsManager: HealthConnectAppsManager
-) :
-    ViewModel() {
-    private val healthConnectCompatibleApps = healthConnectAppsManager.healthConnectCompatibleApps
+class StepSessionViewModel(private val healthConnectManager: HealthConnectManager) : ViewModel() {
+    private val healthConnectCompatibleApps = healthConnectManager.healthConnectCompatibleApps
 
     val permissions = setOf(
         HealthPermission.getWritePermission(ExerciseSessionRecord::class),
@@ -68,7 +59,7 @@ class StepSessionViewModel(
 
     var sessionsList: MutableState<List<com.jandyho.healthconnectsample.data.ExerciseSession>> = mutableStateOf(listOf())
         private set
-    var stepsList: MutableState<List<com.jandyho.healthconnectsample.data.StepSession>> = mutableStateOf(listOf())
+    var stepsList: MutableState<List<StepSession>> = mutableStateOf(listOf())
         private set
 
     var uiState: UiState by mutableStateOf(UiState.Uninitialized)
@@ -185,14 +176,12 @@ class StepSessionViewModel(
 
 class StepSessionViewModelFactory(
     private val healthConnectManager: HealthConnectManager,
-    private val healthConnectAppsManager: HealthConnectAppsManager
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(StepSessionViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return StepSessionViewModel(
                 healthConnectManager = healthConnectManager,
-                healthConnectAppsManager = healthConnectAppsManager
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

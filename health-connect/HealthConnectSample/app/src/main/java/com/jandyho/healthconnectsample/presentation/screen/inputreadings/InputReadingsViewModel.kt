@@ -38,11 +38,8 @@ import java.time.temporal.ChronoUnit
 import java.util.UUID
 import kotlinx.coroutines.launch
 
-class InputReadingsViewModel(
-    private val healthConnectManager: HealthConnectManager,
-    healthConnectAppsManager: HealthConnectAppsManager
-) : ViewModel() {
-    private val healthConnectCompatibleApps = healthConnectAppsManager.healthConnectCompatibleApps
+class InputReadingsViewModel(private val healthConnectManager: HealthConnectManager) : ViewModel() {
+    private val healthConnectCompatibleApps = healthConnectManager.healthConnectCompatibleApps
 
     val permissions = setOf(
         HealthPermission.getReadPermission(WeightRecord::class),
@@ -154,14 +151,12 @@ class InputReadingsViewModel(
 
 class InputReadingsViewModelFactory(
     private val healthConnectManager: HealthConnectManager,
-    private val healthConnectAppsManager: HealthConnectAppsManager
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(InputReadingsViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return InputReadingsViewModel(
                 healthConnectManager = healthConnectManager,
-                healthConnectAppsManager = healthConnectAppsManager
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

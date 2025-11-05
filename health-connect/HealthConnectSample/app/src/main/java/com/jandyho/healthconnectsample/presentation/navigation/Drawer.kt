@@ -88,7 +88,7 @@ fun Drawer(
             text = stringResource(id = R.string.app_name)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Screen.values().filter { it.hasMenuItem }.forEach { item ->
+        Screen.entries.filter { it.hasMenuItem }.forEach { item ->
             DrawerItem(
                 item = item,
                 selected = item.route == currentRoute,

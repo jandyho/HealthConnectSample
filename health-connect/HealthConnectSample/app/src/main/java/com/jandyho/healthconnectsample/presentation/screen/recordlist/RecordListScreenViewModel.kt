@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.healthconnectsample.presentation.screen.recordlist
+package com.jandyho.healthconnectsample.presentation.screen.recordlist
 
 import android.os.RemoteException
 import androidx.compose.runtime.getValue
@@ -32,7 +32,7 @@ import androidx.health.connect.client.records.TotalCaloriesBurnedRecord
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.healthconnectsample.data.HealthConnectManager
+import com.jandyho.healthconnectsample.data.HealthConnectManager
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.UUID

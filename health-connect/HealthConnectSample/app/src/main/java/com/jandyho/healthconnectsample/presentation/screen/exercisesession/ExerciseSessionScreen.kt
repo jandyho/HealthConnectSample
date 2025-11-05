@@ -148,7 +148,8 @@ fun ExerciseSessionScreen(
                         },
                         onDetailsClick = { uid ->
                             onDetailsClick(uid)
-                        }
+                        },
+                        steps = "0"
                     )
                 }
             }

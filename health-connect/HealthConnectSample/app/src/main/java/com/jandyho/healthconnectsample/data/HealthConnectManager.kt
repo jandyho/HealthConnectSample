@@ -15,6 +15,7 @@
  */
 package com.jandyho.healthconnectsample.data
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -46,7 +47,7 @@ import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.health.connect.client.units.Energy
 import androidx.health.connect.client.units.Length
 import androidx.health.connect.client.units.Mass
-import com.example.healthconnectsample.R
+import com.jandyho.healthconnectsample.R
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.IOException
@@ -154,6 +155,7 @@ class HealthConnectManager(private val context: Context) {
      * Writes an [ExerciseSessionRecord] to Health Connect, and additionally writes underlying data for
      * the session too, such as [StepsRecord], [DistanceRecord] etc.
      */
+    @SuppressLint("RestrictedApi")
     suspend fun writeExerciseSession(
         start: ZonedDateTime,
         end: ZonedDateTime
@@ -204,6 +206,29 @@ class HealthConnectManager(private val context: Context) {
         val exerciseSession = healthConnectClient.readRecord(ExerciseSessionRecord::class, uid)
         healthConnectClient.deleteRecords(
             ExerciseSessionRecord::class,
+            recordIdsList = listOf(uid),
+            clientRecordIdsList = emptyList()
+        )
+        val timeRangeFilter = TimeRangeFilter.between(
+            exerciseSession.record.startTime,
+            exerciseSession.record.endTime
+        )
+        val rawDataTypes: Set<KClass<out Record>> = setOf(
+            HeartRateRecord::class,
+            SpeedRecord::class,
+            DistanceRecord::class,
+            StepsRecord::class,
+            TotalCaloriesBurnedRecord::class
+        )
+        rawDataTypes.forEach { rawType ->
+            healthConnectClient.deleteRecords(rawType, timeRangeFilter)
+        }
+    }
+
+    suspend fun deleteStepSession(uid: String) {
+        val exerciseSession = healthConnectClient.readRecord(StepsRecord::class, uid)
+        healthConnectClient.deleteRecords(
+            StepsRecord::class,
             recordIdsList = listOf(uid),
             clientRecordIdsList = emptyList()
         )
@@ -448,7 +473,7 @@ class HealthConnectManager(private val context: Context) {
     /**
      * Convenience function to fetch a time-based record and return series data based on the record.
      * Record types compatible with this function must be declared in the
-     * [com.example.healthconnectsample.presentation.screen.recordlist.RecordType] enum.
+     * [com.jandyho.healthconnectsample.presentation.screen.recordlist.RecordType] enum.
      */
     suspend fun fetchSeriesRecordsFromUid(recordType: KClass<out Record>, uid: String, seriesRecordsType: KClass<out Record>): List<Record> {
         val recordResponse = healthConnectClient.readRecord(recordType, uid)

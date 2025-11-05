@@ -25,13 +25,13 @@ import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.jandyho.healthconnectsample.data.HealthConnectManager
 import com.jandyho.healthconnectsample.data.SleepSessionData
 import java.io.IOException
 import java.util.UUID
 import kotlinx.coroutines.launch
 
-class SleepSessionViewModel(private val healthConnectManager: com.jandyho.healthconnectsample.data.HealthConnectManager) :
-    ViewModel() {
+class SleepSessionViewModel(private val healthConnectManager: HealthConnectManager) : ViewModel() {
 
     val permissions = setOf(
         HealthPermission.getReadPermission(SleepSessionRecord::class),
@@ -57,12 +57,12 @@ class SleepSessionViewModel(private val healthConnectManager: com.jandyho.health
         }
     }
 
-    fun generateSleepData(notes: Array<String>) {
+    fun generateSleepData() {
         viewModelScope.launch {
             tryWithPermissionsCheck {
                 // Delete all existing sleep data before generating new random sleep data.
                 healthConnectManager.deleteAllSleepData()
-                healthConnectManager.generateSleepData(notes)
+                healthConnectManager.generateSleepData()
                 sessionsList.value = healthConnectManager.readSleepSessions()
             }
         }
@@ -107,7 +107,7 @@ class SleepSessionViewModel(private val healthConnectManager: com.jandyho.health
 }
 
 class SleepSessionViewModelFactory(
-    private val healthConnectManager: com.jandyho.healthconnectsample.data.HealthConnectManager
+    private val healthConnectManager: HealthConnectManager
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SleepSessionViewModel::class.java)) {
