@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 The Android Open Source Project
+ * Copyright 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jandyho.healthconnectsample.presentation.screen
+package com.example.healthconnectsample.presentation.screen
 
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.health.connect.client.HealthConnectClient
-import com.jandyho.healthconnectsample.R
+import com.example.healthconnectsample.R
 
 /**
  * Settings screen for managing Health Connect preferences.
@@ -38,8 +38,8 @@ import com.jandyho.healthconnectsample.R
 @Composable
 fun SettingsScreen(
     revokeAllPermissions: () -> Unit
-){
-    val activity = LocalContext.current
+) {
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,7 +51,7 @@ fun SettingsScreen(
             val settingsIntent = Intent()
             settingsIntent.action =
                 HealthConnectClient.ACTION_HEALTH_CONNECT_SETTINGS
-            activity.startActivity(settingsIntent) }
+            context.startActivity(settingsIntent) }
         ) {
             Text(text = stringResource(id = R.string.manage))
         }
@@ -59,7 +59,6 @@ fun SettingsScreen(
             revokeAllPermissions() }
         ) {
             Text(text = stringResource(id = R.string.disconnect))
-            
         }
     }
 

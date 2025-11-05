@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 The Android Open Source Project
+ * Copyright 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -73,6 +74,11 @@ fun ExerciseSessionRow(
             onClick = { onDeleteClick(uid) },
         ) {
             Icon(Icons.Default.Delete, stringResource(R.string.delete_button))
+        }
+        IconButton(
+            onClick = { onDetailsClick(uid) },
+        ) {
+            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, stringResource(R.string.details_button))
         }
     }
 }

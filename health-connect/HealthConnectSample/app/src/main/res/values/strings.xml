@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-     Copyright (C) 2022 The Android Open Source Project
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-          http://www.apache.org/licenses/LICENSE-2.0
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
--->
+  ~ Copyright 2024 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
 <resources>
     <string name="app_name">JHealth Connect Sample</string>
     <string name="menu">menu</string>
@@ -45,11 +48,10 @@
     <string name="health_connect_package">com.google.android.apps.healthdata</string>
     <string name="onboarding_url">healthconnect://onboarding</string>
     <string name="not_installed_description">
-        Health Connect is supported on this device, but is not currently installed.
+        Health Connect is supported on this device, but is either not installed, or requires an update.
     </string>
     <string name="not_installed_link_text">
-        To use this sample, and other apps using Health Connect, please install the Health Connect
-        package from Google Play.
+        To use this sample, please install or update the Health Connect package via Google Play.
     </string>
 
     <!-- Not supported on device -->
@@ -71,6 +73,7 @@
     <string name="no_title">[No title]</string>
     <string name="unknown_app">[Unknown app]</string>
     <string name="delete_button">Delete</string>
+    <string name="details_button">Details</string>
 
     <!-- Exercise Session detail screen -->
     <string name="total_active_duration">Total active duration</string>
@@ -129,6 +132,11 @@
     <string name="differential_changes_type_sleep_stage">Sleep stage</string>
     <string name="differential_changes_type_distance">Distance</string>
     <string name="differential_changes_type_weight">Weight</string>
+
+    <!-- Record List screen -->
+    <string name="record_list">Record list</string>
+    <string name="exercise_sessions_record_list">Exercise Sessions Record list</string>
+    <string name="sleep_sessions_record_list">Sleep Sessions Record list</string>
 
     <!-- Health Connect settings -->
     <string name="settings">Settings</string>

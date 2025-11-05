@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 The Android Open Source Project
+ * Copyright 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,8 +34,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.health.connect.client.permission.HealthPermission.Companion.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import com.jandyho.healthconnectsample.R
+import com.jandyho.healthconnectsample.data.ExerciseSession
+import com.jandyho.healthconnectsample.data.HealthConnectAppInfo
 import com.jandyho.healthconnectsample.presentation.component.ExerciseSessionRow
 import com.jandyho.healthconnectsample.presentation.theme.HealthConnectTheme
 import java.time.ZonedDateTime
@@ -48,7 +51,9 @@ import java.util.UUID
 fun ExerciseSessionScreen(
     permissions: Set<String>,
     permissionsGranted: Boolean,
-    sessionsList: List<com.jandyho.healthconnectsample.data.ExerciseSession>,
+    backgroundReadAvailable: Boolean,
+    backgroundReadGranted: Boolean,
+    sessionsList: List<ExerciseSession>,
     uiState: ExerciseSessionViewModel.UiState,
     onInsertClick: () -> Unit = {},
     onDetailsClick: (String) -> Unit = {},
@@ -108,6 +113,26 @@ fun ExerciseSessionScreen(
                         Text(stringResource(id = R.string.insert_exercise_session))
                     }
                 }
+                if (!backgroundReadGranted) {
+                    item {
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp)
+                                .padding(4.dp),
+                            onClick = {
+                                onPermissionsLaunch(setOf(PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND))
+                            },
+                            enabled = backgroundReadAvailable,
+                        ) {
+                            if (backgroundReadAvailable){
+                                Text("Request Background Read")
+                            } else {
+                                Text("Background Read Is Not Available")
+                            }
+                        }
+                    }
+                }
 
                 items(sessionsList) { session ->
                     val appInfo = session.sourceAppInfo
@@ -116,7 +141,6 @@ fun ExerciseSessionScreen(
                         end = session.endTime,
                         uid = session.id,
                         name = session.title ?: stringResource(R.string.no_title),
-                        "0",
                         sourceAppName = appInfo?.appLabel ?: stringResource(R.string.unknown_app),
                         sourceAppIcon = appInfo?.icon,
                         onDeleteClick = { uid ->
@@ -142,7 +166,7 @@ fun ExerciseSessionScreenPreview() {
         val walkingStartTime = ZonedDateTime.now().minusMinutes(120)
         val walkingEndTime = walkingStartTime.plusMinutes(30)
 
-        val appInfo = com.jandyho.healthconnectsample.data.HealthConnectAppInfo(
+        val appInfo = HealthConnectAppInfo(
             packageName = "com.example.myfitnessapp",
             appLabel = "My Fitness App",
             icon = context.getDrawable(R.drawable.ic_launcher_foreground)!!
@@ -151,23 +175,25 @@ fun ExerciseSessionScreenPreview() {
         ExerciseSessionScreen(
             permissions = setOf(),
             permissionsGranted = true,
+            backgroundReadAvailable = false,
+            backgroundReadGranted = false,
             sessionsList = listOf(
-                com.jandyho.healthconnectsample.data.ExerciseSession(
+                ExerciseSession(
                     title = "Running",
                     startTime = runningStartTime,
                     endTime = runningEndTime,
                     id = UUID.randomUUID().toString(),
                     sourceAppInfo = appInfo
                 ),
-                com.jandyho.healthconnectsample.data.ExerciseSession(
-                    title = "Running",
+                ExerciseSession(
+                    title = "Walking",
                     startTime = walkingStartTime,
                     endTime = walkingEndTime,
                     id = UUID.randomUUID().toString(),
                     sourceAppInfo = appInfo
                 )
             ),
-            uiState = ExerciseSessionViewModel.UiState.Done,
+            uiState = ExerciseSessionViewModel.UiState.Done
         )
     }
 }

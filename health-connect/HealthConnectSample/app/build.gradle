@@ -1,11 +1,11 @@
 /*
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,7 +20,7 @@ plugins {
 }
 
 android {
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.jandyho.healthconnectsample"
@@ -53,7 +53,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.8"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
     packagingOptions {
         resources {
@@ -65,15 +65,15 @@ android {
 
 dependencies {
 
-    def composeBom = platform('androidx.compose:compose-bom:2023.09.01')
+    def composeBom = platform('androidx.compose:compose-bom:2024.09.03')
     implementation(composeBom)
 
     // For Health Connect
     implementation "androidx.health.connect:connect-client:$health_connect_version"
 
     // Fix permissions issue until 1.1.0-alpha02
-    implementation "androidx.core:core:1.12.0"
-    implementation "androidx.core:core-ktx:1.12.0"
+    implementation "androidx.core:core:1.13.1"
+    implementation "androidx.core:core-ktx:1.13.1"
 
     // For viewmodel support
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
@@ -86,7 +86,7 @@ dependencies {
 
     // Icons
     implementation "androidx.compose.material:material-icons-extended"
-    implementation "com.google.accompanist:accompanist-drawablepainter:0.32.0"
+    implementation "com.google.accompanist:accompanist-drawablepainter:0.36.0"
 
     implementation "androidx.compose.ui:ui"
     implementation "androidx.compose.material:material"
@@ -96,5 +96,5 @@ dependencies {
 
     debugImplementation "androidx.compose.ui:ui-tooling"
 
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.2.3"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.2"
 }

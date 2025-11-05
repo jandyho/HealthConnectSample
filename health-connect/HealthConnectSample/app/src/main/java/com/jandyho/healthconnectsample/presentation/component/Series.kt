@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 The Android Open Source Project
+ * Copyright 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jandyho.healthconnectsample.presentation.component
+package com.example.healthconnectsample.presentation.component
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
@@ -33,9 +33,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.SpeedRecord
-import com.jandyho.healthconnectsample.R
-import com.jandyho.healthconnectsample.data.dateTimeWithOffsetOrDefault
-import com.jandyho.healthconnectsample.presentation.theme.HealthConnectTheme
+import androidx.health.connect.client.records.metadata.Metadata
+import com.example.healthconnectsample.R
+import com.example.healthconnectsample.data.dateTimeWithOffsetOrDefault
+import com.example.healthconnectsample.presentation.theme.HealthConnectTheme
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset
@@ -142,6 +143,7 @@ fun HeartRateSeriesPreview() {
                 labelId = R.string.hr_series,
                 series = listOf(
                     HeartRateRecord(
+                        metadata = Metadata.manualEntry(),
                         startTime = time2,
                         startZoneOffset = ZoneId.systemDefault().rules.getOffset(time2),
                         endTime = time1,

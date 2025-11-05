@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 The Android Open Source Project
+ * Copyright 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jandyho.healthconnectsample.presentation.screen
+package com.example.healthconnectsample.presentation.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +31,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,11 +41,12 @@ import androidx.health.connect.client.HealthConnectClient.Companion.SDK_UNAVAILA
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.jandyho.healthconnectsample.R
-import com.jandyho.healthconnectsample.presentation.component.InstalledMessage
-import com.jandyho.healthconnectsample.presentation.component.NotInstalledMessage
-import com.jandyho.healthconnectsample.presentation.component.NotSupportedMessage
-import com.jandyho.healthconnectsample.presentation.theme.HealthConnectTheme
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.example.healthconnectsample.R
+import com.example.healthconnectsample.presentation.component.InstalledMessage
+import com.example.healthconnectsample.presentation.component.NotInstalledMessage
+import com.example.healthconnectsample.presentation.component.NotSupportedMessage
+import com.example.healthconnectsample.presentation.theme.HealthConnectTheme
 
 /**
  * Welcome screen shown when the app is first launched.

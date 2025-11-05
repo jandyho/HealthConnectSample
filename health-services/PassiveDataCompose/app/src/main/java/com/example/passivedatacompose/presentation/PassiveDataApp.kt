@@ -21,8 +21,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.wear.compose.material.Scaffold
-import androidx.wear.compose.material.TimeText
+import androidx.wear.compose.material3.AppScaffold
+import com.example.passivedatacompose.PERMISSION
 import com.example.passivedatacompose.data.HealthServicesRepository
 import com.example.passivedatacompose.data.PassiveDataRepository
 import com.example.passivedatacompose.theme.PassiveDataTheme
@@ -36,9 +36,8 @@ fun PassiveDataApp(
     passiveDataRepository: PassiveDataRepository
 ) {
     PassiveDataTheme {
-        Scaffold(
+        AppScaffold(
             modifier = Modifier.fillMaxSize(),
-            timeText = { TimeText() }
         ) {
             val viewModel: PassiveDataViewModel = viewModel(
                 factory = PassiveDataViewModelFactory(
@@ -52,7 +51,7 @@ fun PassiveDataApp(
 
             if (uiState == UiState.Supported) {
                 val permissionState = rememberPermissionState(
-                    permission = "android.permission.BODY_SENSORS",
+                    permission = PERMISSION,
                     onPermissionResult = { granted ->
                         if (granted) viewModel.toggleEnabled()
                     }

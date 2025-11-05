@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 The Android Open Source Project
+ * Copyright 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jandyho.healthconnectsample.presentation.component
+package com.example.healthconnectsample.presentation.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,7 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.health.connect.client.records.SleepSessionRecord
-import com.jandyho.healthconnectsample.presentation.theme.HealthConnectTheme
+import com.example.healthconnectsample.formatDisplayTimeStartEnd
+import com.example.healthconnectsample.presentation.theme.HealthConnectTheme
 import java.time.ZonedDateTime
 
 @Composable
@@ -38,7 +39,7 @@ fun SleepStagesDetail(sleepStages: List<SleepSessionRecord.Stage>) {
                 .fillMaxSize()
                 .padding(horizontal = 32.dp)
         ) {
-            val startEndLabel = com.jandyho.healthconnectsample.formatDisplayTimeStartEnd(
+            val startEndLabel = formatDisplayTimeStartEnd(
                 stage.startTime, null, stage.endTime, null
             )
             Text(
